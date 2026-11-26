@@ -11,3 +11,11 @@
   ```
 
   The experiment folder (named by the experiment ID) must contain `ExportBarcodes/barcodes.csv` (with `gene`, `x_pixel` and `y_pixel` columns) and `GenerateMosaic/mosaic_polyt.png`. The script copies both files into `<experiment_folder>/<experiment_id>_tissuumaps/`, writes `<experiment_id>.tm4` there (points use `x="y_pixel"`, `y="x_pixel"`, colored by the `gene` column with the `Distinct` palette), and zips the folder to `<experiment_folder>/<experiment_id>_tissuumaps.zip`. Unzip and open the `.tm4` file in TissUUmaps V4 to view the data.
+
+  Optionally, pass a cell segmentation GeoJSON to also add the cell polygons as shapes, colored by Leiden cluster after a Scanpy UMAP (same pipeline as `convert2tmap.ipynb`):
+
+  ```
+  python scripts/make_tissuumaps_v4.py <experiment_folder> --segmentation <experiment_folder>/cellposeMosaic.geojson
+  ```
+
+  This adds the segmentation file (with a per-cell `id`) and a `cells.csv` (`id`, `leiden`) to the output folder and references them from the `.tm4` as a `geojson` shapes object with a `leiden` color map. It requires the optional dependencies `pandas`, `geopandas`, `anndata`, `scanpy` and `leidenalg`.
