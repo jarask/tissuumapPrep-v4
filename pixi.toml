@@ -1,0 +1,18 @@
+[project]
+name = "tissuumapPrep-v4"
+description = "Scripts for preparing files from MERFISH to TissUUmaps"
+channels = ["conda-forge", "bioconda"]
+platforms = ["linux-64", "osx-64", "osx-arm64"]
+
+[dependencies]
+python = ">=3.10"
+# Only needed for the optional --segmentation (UMAP/Leiden labels):
+pandas = "*"
+geopandas = "*"
+anndata = "*"
+scanpy = "*"
+leidenalg = "*"
+
+[tasks]
+# Usage: pixi run make-tm4 -- <experiment_folder> [--segmentation <geojson>]
+make-tm4 = "python scripts/make_tissuumaps_v4.py"
