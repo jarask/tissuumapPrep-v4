@@ -22,33 +22,24 @@
 
 ## Running with pixi
 
-This repo ships a [`pixi.toml`](pixi.toml), so you can run the script in a managed environment straight from this clone:
+This repo ships a [`pixi.toml`](pixi.toml) with a `make-tm4` task, so from this clone:
 
 ```
 pixi run make-tm4 -- <experiment_folder>
-pixi run make-tm4 -- <experiment_folder> --segmentation <experiment_folder>/cellposeMosaic.geojson
 ```
 
-To use the script from another project that has its own `pixi.toml`, add a task pointing at the script and declare the dependencies in that project:
+To use the script from another project that has its own `pixi.toml`, copy `scripts/make_tissuumaps_v4.py` into that project (or point the task at your clone of this repo) and add:
 
 ```toml
 # pixi.toml of your own project
 [tasks]
-make-tm4 = "python /path/to/tissuumapPrep-v4/scripts/make_tissuumaps_v4.py"
-
-[dependencies]
-python = ">=3.10"
-# only needed for --segmentation:
-pandas = "*"
-geopandas = "*"
-anndata = "*"
-scanpy = "*"
-leidenalg = "*"
+make-tm4 = "python scripts/make_tissuumaps_v4.py"
 ```
 
 ```
 pixi run make-tm4 -- experiments/20240925CA-01
-pixi run make-tm4 -- experiments/20240925CA-01 --segmentation experiments/20240925CA-01/cellposeMosaic.geojson
 ```
 
-Replace `/path/to/tissuumapPrep-v4` with the location of your clone (a relative path works too). Alternatively, run the task from this repo's pixi environment in any directory: `pixi run --manifest-path /path/to/tissuumapPrep-v4/pixi.toml make-tm4 -- <experiment_folder>`.
+The base version is stdlib-only, so no extra dependencies are needed. Alternatively, run it from this repo's pixi environment in any directory: `pixi run --manifest-path /path/to/tissuumapPrep-v4/pixi.toml make-tm4 -- <experiment_folder>`.
+
+Note: `--segmentation` (UMAP/Leiden cell labels) additionally requires `pandas`, `geopandas`, `anndata`, `scanpy` and `leidenalg` in the environment; the base version above does not.
