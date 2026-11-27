@@ -41,6 +41,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.pixi/
 
 # Additional files and folders
 data/*
